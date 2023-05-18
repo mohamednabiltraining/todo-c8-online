@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "219670468709",
+    "project_id": "todo-c8-online",
+    "storage_bucket": "todo-c8-online.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219670468709:android:dd737012a0c49de2dd8e8c",
+        "android_client_info": {
+          "package_name": "com.example.todo_c8_online"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219670468709-un12rokf71f1ifmgs7e45urojjrlqaqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcCli-n_B-HtUNRAElYGtWstSh4G8OSoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219670468709-un12rokf71f1ifmgs7e45urojjrlqaqh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "219670468709-1bdsjfld5b2illggb6ds1kgkcfv6u3sr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.todoC8Online"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
