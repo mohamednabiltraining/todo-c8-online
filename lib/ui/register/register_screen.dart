@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_c8_online/database/model/User.dart' as MyUser;
 import 'package:todo_c8_online/database/my_database.dart';
+import 'package:todo_c8_online/providers/auth_provider.dart';
 import 'package:todo_c8_online/ui/components/custom_form_field.dart';
 import 'package:todo_c8_online/ui/dialog_utils.dart';
 import 'package:todo_c8_online/ui/home/home_screen.dart';
@@ -140,10 +142,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
        name: nameController.text,
        email: emailController.text
      );
-     await MyDataBase.addUser(myUser);
+     await MyDataBase.addUser(myUser)
+     .timeout(Duration(seconds: 5),onTimeout: (){
+       // can't reach network
+     });
+     var authProvider = Provider.of<AuthProvider>(context,listen: false);
+     authProvider.updateUser(myUser);
+
      DialogUtils.hideDialog(context);
      DialogUtils.showMessage(context, 'user registered successfully',
-       postActionName: 'ok',
+       posActionName: 'ok',
        posAction: (){
         Navigator.pushReplacementNamed(context,HomeScreen.routeName);
        },dismissible: false
@@ -158,13 +166,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         errorMessage = 'The account already exists for that email.';
       }
       DialogUtils.showMessage(context, errorMessage,
-      postActionName: 'ok');
+      posActionName: 'ok');
 
     } catch (e) {
       DialogUtils.hideDialog(context);
       String errorMessage = 'Something went wrong';
       DialogUtils.showMessage(context, errorMessage,
-      postActionName: 'cancel',
+      posActionName: 'cancel',
         negActionName: 'Try Again',
         negAction: (){
         register();

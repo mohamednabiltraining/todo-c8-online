@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_c8_online/MyDateUtils.dart';
+import 'package:todo_c8_online/database/model/task.dart';
+import 'package:todo_c8_online/database/my_database.dart';
+import 'package:todo_c8_online/providers/auth_provider.dart';
 import 'package:todo_c8_online/ui/components/custom_form_field.dart';
+import 'package:todo_c8_online/ui/dialog_utils.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   @override
@@ -73,10 +78,37 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     );
   }
 
-  void addTask(){
+  void addTask()async{
     if(formKey.currentState?.validate()==false){
       return;
     }
+
+    // show loading
+    DialogUtils.showLoadingDialog(context, 'Loading...');
+
+    // add task to db
+    Task task = Task(
+      title: titleController.text,
+      desc: descriptionController.text,
+      dateTime: MyDateUtils.dateOnly(selectedDate)
+    );
+    // 1685916000000
+    // 1685923200000
+    AuthProvider authProvider = Provider.of<AuthProvider>(context,
+        listen: false);
+    print('add task time');
+    print('${selectedDate.millisecondsSinceEpoch}');
+    await MyDataBase.addTask(authProvider.currentUser?.id ?? "", task);
+    DialogUtils.hideDialog(context);
+    DialogUtils.showMessage(context, 'Task Added Successfully',
+    posActionName:'ok' ,
+      posAction: (){
+      Navigator.pop(context);
+      },
+    );
+
+    // hide loading and return back to home screen
+
   }
   var selectedDate = DateTime.now();
   void showTaskDatePicker()async{

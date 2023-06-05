@@ -23,19 +23,19 @@ class DialogUtils{
   }
   static void showMessage(BuildContext context,
       String message, {
-    String? postActionName,
+    String? posActionName,
         VoidCallback? posAction,
         String? negActionName,
         VoidCallback? negAction,
         bool dismissible = true
       }){
     List<Widget> actions = [];
-    if(postActionName!=null){
+    if(posActionName!=null){
       actions.add(TextButton(onPressed: (){
         Navigator.pop(context);
         posAction?.call();
       },
-          child: Text(postActionName)));
+          child: Text(posActionName)));
     }
     if(negActionName!=null){
       actions.add(TextButton(onPressed: (){

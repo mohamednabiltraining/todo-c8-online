@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_c8_online/database/my_database.dart';
+import 'package:todo_c8_online/providers/auth_provider.dart';
 import 'package:todo_c8_online/ui/components/custom_form_field.dart';
 import 'package:todo_c8_online/ui/dialog_utils.dart';
 import 'package:todo_c8_online/ui/home/home_screen.dart';
@@ -112,11 +114,15 @@ class _LoginScreenState extends State<LoginScreen> {
       if(user==null){
         // user is authenticated but not exists in the database
         DialogUtils.showMessage(context, "error. can't find user in db",
-            postActionName: 'ok');
+            posActionName: 'ok');
         return;
       }
+
+      var authProvider = Provider.of<AuthProvider>(context,listen: false);
+      authProvider.updateUser(user);
+
       DialogUtils.showMessage(context, 'user logged in successfully',
-          postActionName: 'ok',
+          posActionName: 'ok',
           posAction: (){
             Navigator.pushReplacementNamed(context,HomeScreen.routeName);
           },dismissible: false
@@ -126,13 +132,13 @@ class _LoginScreenState extends State<LoginScreen> {
       DialogUtils.hideDialog(context);
       String errorMessage = 'wrong email or password';
         DialogUtils.showMessage(context, errorMessage,
-          postActionName: 'ok');
+          posActionName: 'ok');
 
     } catch (e) {
       DialogUtils.hideDialog(context);
       String errorMessage = 'Something went wrong';
       DialogUtils.showMessage(context, errorMessage,
-          postActionName: 'cancel',
+          posActionName: 'cancel',
           negActionName: 'Try Again',
           negAction: (){
             login();

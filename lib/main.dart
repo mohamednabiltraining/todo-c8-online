@@ -1,16 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_c8_online/firebase_options.dart';
+import 'package:todo_c8_online/providers/auth_provider.dart';
 import 'package:todo_c8_online/ui/home/home_screen.dart';
 import 'package:todo_c8_online/ui/login/login_screen.dart';
 import 'package:todo_c8_online/ui/register/register_screen.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+//  FirebaseFirestore.instance.disableNetwork();
+  runApp(ChangeNotifierProvider(
+      create: (buildContext)=>AuthProvider(),
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -20,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: FToastBuilder(),
       theme: ThemeData(
         textTheme: TextTheme(
           headline4: TextStyle(
