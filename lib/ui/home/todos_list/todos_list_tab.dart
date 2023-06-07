@@ -14,8 +14,8 @@ class TodosListTab extends StatefulWidget {
 }
 
 class _TodosListTabState extends State<TodosListTab> {
-  DateTime selectedDate = DateTime.now();
-  DateTime focusedDate = DateTime.now();
+  DateTime focusedDay = DateTime.now();
+  DateTime selectedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
     var authProvider = Provider.of<AuthProvider>(context);
@@ -23,27 +23,26 @@ class _TodosListTabState extends State<TodosListTab> {
       child: Column(
         children: [
           TableCalendar(
-            focusedDay: focusedDate,
-            firstDay: DateTime.now().subtract(Duration(days: 365)),
-            lastDay: DateTime.now().add(Duration(days: 365)),
+          firstDay: DateTime.now().subtract(Duration(days: 365)),
+        lastDay: DateTime.now().add(Duration(days: 365)),
+        focusedDay: focusedDay,
+            selectedDayPredicate: (date){
+            return isSameDay(selectedDay, date);
+            },
+            onDaySelected: (selectedDay,focusedDay){
+            setState(() {
+              this.focusedDay =focusedDay;
+              this.selectedDay = selectedDay;
+            });
+            },
             calendarFormat: CalendarFormat.week,
-            selectedDayPredicate: (day) {
-              return isSameDay(selectedDate, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              print('selected day millis');
-              print(selectedDay.millisecondsSinceEpoch);
-              setState(() {
-                this.selectedDate = selectedDay;
-                this.focusedDate = focusedDay;
-              });
-            },
-          ),
+    ),
           Expanded(
               child: StreamBuilder<QuerySnapshot<Task>>(
             stream: MyDataBase.getTasksRealTimeUpdate(
                 authProvider.currentUser?.id ?? "",
-                MyDateUtils.dateOnly(selectedDate).millisecondsSinceEpoch),
+              MyDateUtils.getDateOnly(selectedDay).millisecondsSinceEpoch
+            ),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Center(child: Text(snapshot.error.toString()));
@@ -55,7 +54,8 @@ class _TodosListTabState extends State<TodosListTab> {
               }
               // finished
               var tasksList =
-                  snapshot.data?.docs.map((doc) => doc.data()).toList();
+                  snapshot.data?.
+                  docs.map((doc) => doc.data()).toList();
               if (tasksList?.isEmpty == true) {
                 return Center(
                   child: Text("you don't have any tasks yet"),

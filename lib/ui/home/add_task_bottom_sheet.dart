@@ -90,7 +90,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     Task task = Task(
       title: titleController.text,
       desc: descriptionController.text,
-      dateTime: MyDateUtils.dateOnly(selectedDate)
+      dateTime: MyDateUtils.getDateOnly(selectedDate)
     );
     // 1685916000000
     // 1685923200000

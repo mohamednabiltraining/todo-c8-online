@@ -8,6 +8,7 @@ import 'package:todo_c8_online/ui/home/home_screen.dart';
 import 'package:todo_c8_online/ui/login/login_screen.dart';
 import 'package:todo_c8_online/ui/register/register_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:todo_c8_online/ui/splash/splash_screen.dart';
 void main()async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -51,8 +52,9 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName : (_)=>RegisterScreen(),
         LoginScreen.routeName : (_)=>LoginScreen(),
         HomeScreen.routeName : (_)=>HomeScreen(),
+        SplashScreen.routeName : (_)=>SplashScreen()
       },
-      initialRoute: RegisterScreen.routeName,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_c8_online/database/model/User.dart';
+import 'package:todo_c8_online/providers/auth_provider.dart';
 import 'package:todo_c8_online/ui/home/add_task_bottom_sheet.dart';
 import 'package:todo_c8_online/ui/home/settings/settings_tab.dart';
 import 'package:todo_c8_online/ui/home/todos_list/todos_list_tab.dart';
+import 'package:todo_c8_online/ui/login/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = 'home';
@@ -15,10 +19,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text('Route todo app'),
+        actions: [
+          IconButton(onPressed: (){
+            userProvider.logout();
+            Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName,
+                    (route) => false);
+          }, icon: Icon(Icons.logout))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         shape: const StadiumBorder(
